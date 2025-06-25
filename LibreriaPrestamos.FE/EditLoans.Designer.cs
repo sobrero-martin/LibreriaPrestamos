@@ -42,6 +42,7 @@
             this.lblBookISBN = new System.Windows.Forms.Label();
             this.dtpReturnDate = new System.Windows.Forms.DateTimePicker();
             this.btTruncate = new System.Windows.Forms.Button();
+            this.chkReturned = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLoans)).BeginInit();
             this.SuspendLayout();
             // 
@@ -167,11 +168,23 @@
             this.btTruncate.UseVisualStyleBackColor = true;
             this.btTruncate.Click += new System.EventHandler(this.btTruncate_Click);
             // 
+            // chkReturned
+            // 
+            this.chkReturned.AutoSize = true;
+            this.chkReturned.Location = new System.Drawing.Point(21, 133);
+            this.chkReturned.Name = "chkReturned";
+            this.chkReturned.Size = new System.Drawing.Size(70, 17);
+            this.chkReturned.TabIndex = 39;
+            this.chkReturned.Text = "Returned";
+            this.chkReturned.UseVisualStyleBackColor = true;
+            this.chkReturned.CheckedChanged += new System.EventHandler(this.chkReturned_CheckedChanged);
+            // 
             // EditLoans
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.chkReturned);
             this.Controls.Add(this.btTruncate);
             this.Controls.Add(this.dtpReturnDate);
             this.Controls.Add(this.txtBookISBN);
@@ -211,5 +224,6 @@
         private System.Windows.Forms.Label lblBookISBN;
         private System.Windows.Forms.DateTimePicker dtpReturnDate;
         private System.Windows.Forms.Button btTruncate;
+        private System.Windows.Forms.CheckBox chkReturned;
     }
 }

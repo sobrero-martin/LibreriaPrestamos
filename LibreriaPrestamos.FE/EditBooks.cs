@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Entities;
+using Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,42 +28,42 @@ namespace LibreriaPrestamos.FE
         }
 
         private void btInsert_Click(object sender, EventArgs e)
-        {
+        {     
+            string error = Business.InsertBook(txtISBN.Text, txtTitle.Text, txtAuthor.Text, txtPublisher.Text, txtCopies.Text);
 
-            if (Convert.ToInt32(txtCopies.Text) > 0)
+            if (error != null)
             {
-                Book book = new Book(txtISBN.Text, txtTitle.Text, txtAuthor.Text, txtPublisher.Text, Convert.ToInt32(txtCopies.Text), true);
-                BookDB.Insert(book);
-            }
-            else
-            {
-                Book book = new Book(txtISBN.Text, txtTitle.Text, txtAuthor.Text, txtPublisher.Text, Convert.ToInt32(txtCopies.Text), false);
-                BookDB.Insert(book);
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            dgvBooks.DataSource = BookDB.LoadDGV();
+            dgvBooks.DataSource = Business.GetBooks();
         }
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            BookDB.Delete(txtISBN.Text);
-            dgvBooks.DataSource = BookDB.LoadDGV();
+            string error = Business.DeleteBook(txtISBN.Text);
+
+            if (error != null)
+            {
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            dgvBooks.DataSource = Business.GetBooks();
         }
 
         private void btUpdate_Click(object sender, EventArgs e)
         {
-            if (Convert.ToInt32(txtCopies.Text) > 0)
+            string error = Business.UpdateBook(txtISBN.Text, txtTitle.Text, txtAuthor.Text, txtPublisher.Text, txtCopies.Text);
+
+            if (error != null)
             {
-                Book book = new Book(txtISBN.Text, txtTitle.Text, txtAuthor.Text, txtPublisher.Text, Convert.ToInt32(txtCopies.Text), true);
-                BookDB.Update(book);
-            }
-            else
-            {
-                Book book = new Book(txtISBN.Text, txtTitle.Text, txtAuthor.Text, txtPublisher.Text, Convert.ToInt32(txtCopies.Text), false);
-                BookDB.Update(book);
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            dgvBooks.DataSource = BookDB.LoadDGV();
+            dgvBooks.DataSource = Business.GetBooks();
         }
     }
 }

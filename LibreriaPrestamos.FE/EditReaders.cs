@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Entities;
+using Logic;
 
 namespace LibreriaPrestamos.FE
 {
@@ -28,22 +29,37 @@ namespace LibreriaPrestamos.FE
 
         private void btInsert_Click(object sender, EventArgs e)
         {
-            Reader reader = new Reader(Convert.ToInt32(txtDNI.Text), txtName.Text, txtSurname.Text, txtContact.Text);
-            ReaderDB.Insert(reader);
-            dgvReaders.DataSource = ReaderDB.LoadDGV();
+            string error = Business.InsertReader(txtDNI.Text, txtName.Text, txtSurname.Text, txtContact.Text);
+
+            if (error != null)
+            {
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            dgvReaders.DataSource = Business.GetReaders();
         }
 
         private void btDelete_Click(object sender, EventArgs e)
         {
-            ReaderDB.Delete(Convert.ToInt32(txtDNI.Text));
-            dgvReaders.DataSource = ReaderDB.LoadDGV();
+           string error = Business.DeleteReader(txtDNI.Text);
+            if (error != null)
+            {
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            dgvReaders.DataSource = Business.GetReaders();
         }
 
         private void btUpdate_Click(object sender, EventArgs e)
         {
-            Reader reader = new Reader(Convert.ToInt32(txtDNI.Text), txtName.Text, txtSurname.Text, txtContact.Text);
-            ReaderDB.Update(reader);
-            dgvReaders.DataSource = ReaderDB.LoadDGV();
+            string error = Business.UpdateReader(txtDNI.Text, txtName.Text, txtSurname.Text, txtContact.Text);
+            if (error != null)
+            {
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            dgvReaders.DataSource = Business.GetReaders();
         }
     }
 }

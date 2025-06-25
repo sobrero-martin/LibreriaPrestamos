@@ -28,13 +28,15 @@ namespace DataAccess
             using (SqlConnection connection = new SqlConnection(str))
             {
                 connection.Open();
-                string insert = "INSERT INTO Loans (LoanDate, ReturnDate, Reader_DNI, Book_ISBN) VALUES (@LoanDate, @ReturnDate, @Reader_DNI, @Book_ISBN); SELECT SCOPE_IDENTITY();";
+                string insert = "INSERT INTO Loans (LoanDate, ReturnDate, Returned, Reader_DNI, Book_ISBN) VALUES (@LoanDate, @ReturnDate, @Returned, @Reader_DNI, @Book_ISBN); SELECT SCOPE_IDENTITY();";
                 using (SqlCommand cmd = new SqlCommand(insert, connection))
                 {
                     cmd.Parameters.AddWithValue("@LoanDate", loan.LoanDate);
                     cmd.Parameters.AddWithValue("@ReturnDate", loan.ReturnDate);
+                    cmd.Parameters.AddWithValue("@Returned", loan.Returned);
                     cmd.Parameters.AddWithValue("@Reader_DNI", loan.Reader_DNI);
                     cmd.Parameters.AddWithValue("@Book_ISBN", loan.Book_ISBN);
+
 
                     // Retrieve the generated Code and assign it to the object
                     loan.Code = Convert.ToInt32(cmd.ExecuteScalar());
@@ -61,14 +63,29 @@ namespace DataAccess
             using (SqlConnection connection = new SqlConnection(str))
             {
                 connection.Open();
-                string update = "UPDATE Loans SET LoanDate = @LoanDate, ReturnDate = @ReturnDate, Reader_DNI = @Reader_DNI, Book_ISBN = @Book_ISBN WHERE Code = @Code";
+                string update = "UPDATE Loans SET LoanDate = @LoanDate, ReturnDate = @ReturnDate WHERE Code = @Code";
                 using (SqlCommand cmd = new SqlCommand(update, connection))
                 {
                     cmd.Parameters.AddWithValue("@Code", loan.Code);
                     cmd.Parameters.AddWithValue("@LoanDate", loan.LoanDate);
                     cmd.Parameters.AddWithValue("@ReturnDate", loan.ReturnDate);
-                    cmd.Parameters.AddWithValue("@Reader_DNI", loan.Reader_DNI);
-                    cmd.Parameters.AddWithValue("@Book_ISBN", loan.Book_ISBN);
+
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void UpdateReturned(Loan loan)
+        {
+            using (SqlConnection connection = new SqlConnection(str))
+            {
+                connection.Open();
+                string update = "UPDATE Loans SET Returned = @Returned WHERE Code = @Code";
+                using (SqlCommand cmd = new SqlCommand(update, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Code", loan.Code);
+                    cmd.Parameters.AddWithValue("@Returned", loan.Returned);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -87,5 +104,6 @@ namespace DataAccess
                 }
             }
         }
+
     }
 }

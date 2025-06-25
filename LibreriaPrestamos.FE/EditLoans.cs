@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Entities;
+using Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,9 +29,15 @@ namespace LibreriaPrestamos.FE
 
         private void btInsert_Click(object sender, EventArgs e)
         {
-            Loan loan = new Loan(null, DateTime.Today, dtpReturnDate.Value, Convert.ToInt32(txtReaderDNI.Text), txtBookISBN.Text);
-            LoanDB.Insert(loan);
-            dgvLoans.DataSource = LoanDB.LoadDGV();
+            string error = Business.InsertLoan(DateTime.Today, dtpReturnDate.Value, false, txtReaderDNI.Text, txtBookISBN.Text);
+
+            if (error != null)
+            {
+                MessageBox.Show(error, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            dgvLoans.DataSource = Business.GetLoans();
         }
 
         private void btDelete_Click(object sender, EventArgs e)
@@ -47,9 +54,20 @@ namespace LibreriaPrestamos.FE
 
         private void btUpdate_Click(object sender, EventArgs e)
         {
-            Loan loan = new Loan(Convert.ToInt32(txtCode.Text), DateTime.Today, dtpReturnDate.Value, Convert.ToInt32(txtReaderDNI.Text), txtBookISBN.Text);
+
+            Loan loan = new Loan(Convert.ToInt32(txtCode.Text), DateTime.Today, dtpReturnDate.Value, chkReturned.Checked, 0, "");
             LoanDB.Update(loan);
+
             dgvLoans.DataSource = LoanDB.LoadDGV();
         }
+
+        private void chkReturned_CheckedChanged(object sender, EventArgs e)
+        {
+            Loan loan = new Loan(Convert.ToInt32(txtCode.Text), DateTime.Today, dtpReturnDate.Value, chkReturned.Checked, 0, "");
+            LoanDB.UpdateReturned(loan);
+
+            dgvLoans.DataSource = LoanDB.LoadDGV();
+        }
+
     }
 }
