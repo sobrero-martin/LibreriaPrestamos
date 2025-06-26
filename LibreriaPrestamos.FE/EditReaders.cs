@@ -18,8 +18,8 @@ namespace LibreriaPrestamos.FE
         public EditReaders()
         {
             InitializeComponent();
-     
-            dgvReaders.DataSource = ReaderDB.LoadDGV(); 
+
+            dgvReaders.DataSource = Business.GetReaders();
         }
 
         private void btBack_Click(object sender, EventArgs e)

@@ -19,7 +19,7 @@ namespace LibreriaPrestamos.FE
         public EditLoans()
         {
             InitializeComponent();
-            dgvLoans.DataSource = LoanDB.LoadDGV();
+            dgvLoans.DataSource = Business.GetLoans();
         }
 
         private void btBack_Click(object sender, EventArgs e)
@@ -43,13 +43,13 @@ namespace LibreriaPrestamos.FE
         private void btDelete_Click(object sender, EventArgs e)
         {
             LoanDB.Delete(Convert.ToInt32(txtCode.Text));
-            dgvLoans.DataSource = LoanDB.LoadDGV();
+            dgvLoans.DataSource = Business.GetLoans();
         }
 
         private void btTruncate_Click(object sender, EventArgs e)
         {
             LoanDB.Truncate();
-            dgvLoans.DataSource = LoanDB.LoadDGV();
+            dgvLoans.DataSource = Business.GetLoans();
         }
 
         private void btUpdate_Click(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace LibreriaPrestamos.FE
             Loan loan = new Loan(Convert.ToInt32(txtCode.Text), DateTime.Today, dtpReturnDate.Value, chkReturned.Checked, 0, "");
             LoanDB.Update(loan);
 
-            dgvLoans.DataSource = LoanDB.LoadDGV();
+            dgvLoans.DataSource = Business.GetLoans();
         }
 
         private void chkReturned_CheckedChanged(object sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace LibreriaPrestamos.FE
             Loan loan = new Loan(Convert.ToInt32(txtCode.Text), DateTime.Today, dtpReturnDate.Value, chkReturned.Checked, 0, "");
             LoanDB.UpdateReturned(loan);
 
-            dgvLoans.DataSource = LoanDB.LoadDGV();
+            dgvLoans.DataSource = Business.GetLoans();
         }
 
     }

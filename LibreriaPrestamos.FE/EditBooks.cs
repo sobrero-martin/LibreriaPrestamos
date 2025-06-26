@@ -19,7 +19,7 @@ namespace LibreriaPrestamos.FE
         public EditBooks()
         {
             InitializeComponent();
-            dgvBooks.DataSource = BookDB.LoadDGV();
+            dgvBooks.DataSource = Business.GetBooks();
         }
 
         private void btBack_Click(object sender, EventArgs e)
